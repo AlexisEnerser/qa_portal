@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Text, Integer, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from datetime import datetime, timezone
 import uuid
@@ -62,5 +62,5 @@ class ExecutionPdfVersion(Base):
     generated_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     generated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
-    execution = relationship("TestExecution", backref="pdf_versions")
+    execution = relationship("TestExecution", backref=backref("pdf_versions", passive_deletes=True))
     generator = relationship("User", foreign_keys=[generated_by])

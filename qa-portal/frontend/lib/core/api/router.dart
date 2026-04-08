@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/projects/projects_screen.dart';
@@ -123,14 +124,10 @@ class AppPages {
 // Redirige a /projects si ya está autenticado
 class GuestMiddleware extends GetMiddleware {
   @override
-  Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    // Esperar a que el auto-login termine
+  RouteSettings? redirect(String? route) {
     final auth = AuthController.to;
-    while (!auth.authReady.value) {
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-    if (auth.isAuthenticated) {
-      return GetNavConfig.fromRoute('/projects');
+    if (auth.authReady.value && auth.isAuthenticated) {
+      return const RouteSettings(name: '/projects');
     }
     return null;
   }
@@ -139,13 +136,10 @@ class GuestMiddleware extends GetMiddleware {
 // Redirige a /login si no está autenticado
 class AuthMiddleware extends GetMiddleware {
   @override
-  Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
+  RouteSettings? redirect(String? route) {
     final auth = AuthController.to;
-    while (!auth.authReady.value) {
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-    if (!auth.isAuthenticated) {
-      return GetNavConfig.fromRoute('/login');
+    if (auth.authReady.value && !auth.isAuthenticated) {
+      return const RouteSettings(name: '/login');
     }
     return null;
   }

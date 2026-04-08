@@ -7,6 +7,15 @@ import 'features/ai_chat/ai_chat_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializar dependencias antes de correr la app
+  Get.put(ApiClient(), permanent: true);
+  final auth = Get.put(AuthController(), permanent: true);
+  Get.put(AiChatController(), permanent: true);
+
+  // Esperar a que el auto-login termine antes de decidir la ruta
+  await auth.waitUntilReady();
+
   runApp(const QAPortalApp());
 }
 
@@ -15,16 +24,14 @@ class QAPortalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = AuthController.to;
+    final initialRoute = auth.isAuthenticated ? '/projects' : '/login';
+
     return GetMaterialApp(
       title: 'QA Portal',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppPages.initial,
+      initialRoute: initialRoute,
       getPages: AppPages.routes,
-      initialBinding: BindingsBuilder(() {
-        Get.put(ApiClient(), permanent: true);
-        Get.put(AuthController(), permanent: true);
-        Get.put(AiChatController(), permanent: true);
-      }),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF6C63FF),

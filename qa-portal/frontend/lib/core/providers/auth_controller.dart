@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
@@ -11,6 +12,18 @@ class AuthController extends GetxController {
   final RxBool authReady = false.obs;
 
   bool get isAuthenticated => user.value != null;
+
+  /// Espera a que el auto-login termine. Se usa en main() antes de runApp.
+  Future<void> waitUntilReady() async {
+    if (authReady.value) return;
+    final completer = Completer<void>();
+    final worker = ever(authReady, (ready) {
+      if (ready && !completer.isCompleted) completer.complete();
+    });
+    if (authReady.value && !completer.isCompleted) completer.complete();
+    await completer.future;
+    worker.dispose();
+  }
 
   @override
   void onInit() {
@@ -58,7 +71,7 @@ class AuthController extends GetxController {
       final refreshToken = prefs.getString('refresh_token');
       if (refreshToken == null) return false;
       final res = await ApiClient.to.post(
-        '${baseUrl}/auth/refresh',
+        '/auth/refresh',
         {'refresh_token': refreshToken},
       );
       if (res.isOk) {
