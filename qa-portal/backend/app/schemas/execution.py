@@ -59,6 +59,7 @@ class ResultUpdate(BaseModel):
     status: Optional[ExecutionResultStatus] = None
     assigned_to: Optional[UUID] = None
     notes: Optional[str] = None
+    route: Optional[str] = None
     duration_seconds: Optional[int] = None
 
 
@@ -79,6 +80,7 @@ class ResultResponse(BaseModel):
     assignee: Optional[UserSummary]
     status: ExecutionResultStatus
     notes: Optional[str]
+    route: Optional[str] = None
     executed_at: Optional[datetime]
     executed_by: Optional[UUID]
     executor: Optional[UserSummary]
@@ -96,6 +98,7 @@ class ResultWithTestCase(BaseModel):
     assignee: Optional[UserSummary]
     status: ExecutionResultStatus
     notes: Optional[str]
+    route: Optional[str] = None
     executed_at: Optional[datetime]
     executed_by: Optional[UUID]
     executor: Optional[UserSummary]

@@ -119,6 +119,7 @@ class ExecutionResult {
   final String? assignedTo;
   final String status;
   final String? notes;
+  final String? route;
   final String? executedAt;
   final int? durationSeconds;
   final Map<String, dynamic>? testCase;
@@ -131,6 +132,7 @@ class ExecutionResult {
     this.assignedTo,
     required this.status,
     this.notes,
+    this.route,
     this.executedAt,
     this.durationSeconds,
     this.testCase,
@@ -145,6 +147,7 @@ class ExecutionResult {
       assignedTo: json['assigned_to'] as String?,
       status: json['status'] as String,
       notes: json['notes'] as String?,
+      route: json['route'] as String?,
       executedAt: json['executed_at'] as String?,
       durationSeconds: json['duration_seconds'] as int?,
       testCase: json['test_case'] as Map<String, dynamic>?,
@@ -160,6 +163,7 @@ class ExecutionResult {
       'assigned_to': assignedTo,
       'status': status,
       'notes': notes,
+      'route': route,
       'executed_at': executedAt,
       'duration_seconds': durationSeconds,
       'test_case': testCase,

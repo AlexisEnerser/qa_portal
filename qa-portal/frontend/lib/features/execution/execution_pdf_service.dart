@@ -243,6 +243,12 @@ class ExecutionPdfService {
         pw.Text('Módulo: ${tc['module_name']}  |  Asignado a: ${tc['assignee']}',
             style: pw.TextStyle(fontSize: 10, color: _grey)),
         pw.SizedBox(height: 4),
+        // Ruta
+        pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+          _box(bg: _white, width: l, title: ' Ruta:', align: pw.MainAxisAlignment.start, style: lbl),
+          _box(bg: _white, width: r, title: ' ${tc['route'] ?? 'n/a'}',
+              align: pw.MainAxisAlignment.start, style: val),
+        ]),
         // Precondición
         pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
           precondRows == 1

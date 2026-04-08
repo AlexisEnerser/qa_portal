@@ -150,6 +150,7 @@ class ExecutionController extends GetxController {
     String? status,
     String? assignedTo,
     String? notes,
+    String? route,
     int? durationSeconds,
   }) async {
     try {
@@ -157,6 +158,7 @@ class ExecutionController extends GetxController {
       if (status != null) body['status'] = status;
       if (assignedTo != null) body['assigned_to'] = assignedTo;
       if (notes != null) body['notes'] = notes;
+      if (route != null) body['route'] = route;
       if (durationSeconds != null) body['duration_seconds'] = durationSeconds;
 
       final response = await ApiClient.to.put(
@@ -177,6 +179,7 @@ class ExecutionController extends GetxController {
             assignedTo: updated.assignedTo,
             status: updated.status,
             notes: updated.notes,
+            route: updated.route,
             executedAt: updated.executedAt,
             durationSeconds: updated.durationSeconds,
             testCase: original.testCase,

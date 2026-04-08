@@ -406,6 +406,7 @@ class _ResultDetailPanel extends StatefulWidget {
 
 class _ResultDetailPanelState extends State<_ResultDetailPanel> {
   late TextEditingController _notesCtrl;
+  late TextEditingController _routeCtrl;
   late String _currentStatus;
   String? _selectedAssignee;
   bool _saving = false;
@@ -423,6 +424,8 @@ class _ResultDetailPanelState extends State<_ResultDetailPanel> {
     super.initState();
     _notesCtrl =
         TextEditingController(text: widget.result.notes ?? '');
+    _routeCtrl =
+        TextEditingController(text: widget.result.route ?? '');
     _currentStatus = widget.result.status;
     _selectedAssignee = widget.result.assignedTo;
     _accumulatedSeconds = widget.result.durationSeconds ?? 0;
@@ -432,6 +435,7 @@ class _ResultDetailPanelState extends State<_ResultDetailPanel> {
   @override
   void dispose() {
     _notesCtrl.dispose();
+    _routeCtrl.dispose();
     _captureService.stop();
     _timerTick?.cancel();
     _stopwatch.stop();
@@ -494,6 +498,7 @@ class _ResultDetailPanelState extends State<_ResultDetailPanel> {
       widget.result.id,
       assignedTo: _selectedAssignee,
       notes: _notesCtrl.text,
+      route: _routeCtrl.text,
     );
     setState(() => _saving = false);
     Get.snackbar('Guardado', 'Cambios guardados correctamente',
@@ -543,6 +548,25 @@ class _ResultDetailPanelState extends State<_ResultDetailPanel> {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            // ── Route ───────────────────────────────────────────────────
+            _sectionLabel('Ruta'),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _routeCtrl,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: 'Ej: url/reportes/semanales',
+                hintStyle: TextStyle(color: Colors.white38),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white24)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF6C63FF))),
+                filled: true,
+                fillColor: Color(0xFF2A2A3E),
+              ),
             ),
             const SizedBox(height: 20),
 

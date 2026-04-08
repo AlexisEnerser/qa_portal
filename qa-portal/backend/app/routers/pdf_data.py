@@ -95,6 +95,7 @@ async def get_execution_pdf_data(
             "title": tc.title,
             "preconditions": tc.preconditions or "",
             "postconditions": tc.postconditions or "",
+            "route": result.route or "n/a",
             "steps": steps,
             "status": result.status.value,
             "status_label": STATUS_LABELS.get(result.status.value, result.status.value),

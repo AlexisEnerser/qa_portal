@@ -54,6 +54,7 @@ class TestExecutionResult(Base):
     assigned_to = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     status = Column(SAEnum(ExecutionResultStatus), nullable=False, default=ExecutionResultStatus.pending)
     notes = Column(Text, nullable=True)
+    route = Column(String(512), nullable=True)
     executed_at = Column(DateTime(timezone=True), nullable=True)
     executed_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     duration_seconds = Column(Integer, nullable=True)

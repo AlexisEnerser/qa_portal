@@ -279,6 +279,9 @@ def update_result(
     if body.notes is not None:
         result.notes = body.notes
 
+    if body.route is not None:
+        result.route = body.route
+
     if body.duration_seconds is not None:
         result.duration_seconds = body.duration_seconds
 
