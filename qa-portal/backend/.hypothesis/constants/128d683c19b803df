@@ -1,0 +1,4 @@
+# file: C:\Users\alexis.gonzalez\Documents\QA\qa-portal\backend\app\config.py
+# hypothesis_version: 6.151.11
+
+[480, 5432, 8000, '.env', 'HS256', 'db', 'development', 'openai/gpt-oss-20b']
