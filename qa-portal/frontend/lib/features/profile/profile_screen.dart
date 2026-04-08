@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -88,8 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _uploading = true);
     try {
       final file = result.files.first;
-      const storage = FlutterSecureStorage();
-      final token = await storage.read(key: 'access_token');
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
       final uri = Uri.parse('$baseUrl/auth/profile/avatar');
 
       final request = http.MultipartRequest('POST', uri);

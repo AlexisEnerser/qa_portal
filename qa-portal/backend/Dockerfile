@@ -18,9 +18,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# Hacer el entrypoint ejecutable
+RUN chmod +x entrypoint.sh
+
 # Carpeta de almacenamiento de capturas
 RUN mkdir -p /app/storage/screenshots
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["./entrypoint.sh"]

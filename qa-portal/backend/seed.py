@@ -14,22 +14,16 @@ from app.services.auth_service import hash_password
 
 INITIAL_USERS = [
     {
-        "name": "Administrador QA",
-        "email": "admin@enerser.com.mx",
-        "password": "Admin1234",
+        "name": "Alexis Gonzalez",
+        "email": "alexis.gonzalez@enerser.com.mx",
+        "password": "1234",
         "role": UserRole.admin,
     },
     {
-        "name": "QA Analista 1",
-        "email": "qa1@enerser.com.mx",
-        "password": "Qa1234",
-        "role": UserRole.qa,
-    },
-    {
-        "name": "QA Analista 2",
-        "email": "qa2@enerser.com.mx",
-        "password": "Qa1234",
-        "role": UserRole.qa,
+        "name": "Mayra Gordillo",
+        "email": "mgordillo@enerser.com.mx",
+        "password": "QaUserPass",
+        "role": UserRole.admin,
     },
 ]
 

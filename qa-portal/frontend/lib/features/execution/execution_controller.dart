@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -223,8 +223,8 @@ class ExecutionController extends GetxController {
     String fileName,
   ) async {
     try {
-      const storage = FlutterSecureStorage();
-      final token = await storage.read(key: 'access_token');
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
       final uri = Uri.parse('$baseUrl/qa/results/$resultId/screenshots');
 
       final request = http.MultipartRequest('POST', uri);
@@ -329,8 +329,8 @@ class ExecutionController extends GetxController {
 
   Future<String?> uploadPdf(String executionId, Uint8List pdfBytes) async {
     try {
-      const storage = FlutterSecureStorage();
-      final token = await storage.read(key: 'access_token');
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
       final uri = Uri.parse('$baseUrl/qa/executions/$executionId/pdf-upload');
 
       final request = http.Request('POST', uri);

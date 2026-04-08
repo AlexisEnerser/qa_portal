@@ -1,12 +1,10 @@
 import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import '../api/api_client.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
-
-  static const _storage = FlutterSecureStorage();
 
   final Rx<User?> user = Rx<User?>(null);
   final RxBool loading = false.obs;
@@ -26,7 +24,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> tryAutoLogin() async {
-    final token = await _storage.read(key: 'access_token');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
     if (token == null) return;
     try {
       final res = await ApiClient.to.get('/auth/me');
@@ -46,7 +45,8 @@ class AuthController extends GetxController {
         }
       }
       // Si nada funcionó, limpiar
-      await _storage.deleteAll();
+      await prefs.remove('access_token');
+      await prefs.remove('refresh_token');
     } catch (_) {
       // No borrar tokens por error de red — puede ser temporal
     }
@@ -54,14 +54,15 @@ class AuthController extends GetxController {
 
   Future<bool> _tryRefresh() async {
     try {
-      final refreshToken = await _storage.read(key: 'refresh_token');
+      final prefs = await SharedPreferences.getInstance();
+      final refreshToken = prefs.getString('refresh_token');
       if (refreshToken == null) return false;
       final res = await ApiClient.to.post(
         '${baseUrl}/auth/refresh',
         {'refresh_token': refreshToken},
       );
       if (res.isOk) {
-        await _storage.write(key: 'access_token', value: res.body['access_token']);
+        await prefs.setString('access_token', res.body['access_token']);
         return true;
       }
       return false;
@@ -79,31 +80,41 @@ class AuthController extends GetxController {
       });
 
       if (!res.isOk) {
-        return res.body['detail'] ?? 'Error al iniciar sesión';
+        if (res.body == null) {
+          return 'Error de conexión con el servidor.';
+        }
+        if (res.body is Map) {
+          return res.body['detail'] ?? 'Error al iniciar sesión';
+        }
+        return 'Error al iniciar sesión';
       }
 
-      await _storage.write(key: 'access_token', value: res.body['access_token']);
-      await _storage.write(key: 'refresh_token', value: res.body['refresh_token']);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access_token', res.body['access_token']);
+      await prefs.setString('refresh_token', res.body['refresh_token']);
 
       final me = await ApiClient.to.get('/auth/me');
       if (me.isOk) user.value = User.fromJson(me.body);
 
       return null;
-    } catch (_) {
-      return 'Error de conexión. Verifica que el servidor esté activo.';
+    } catch (e) {
+      return e.toString();
+      //return 'Error de conexión. Verifica que el servidor esté activo.';
     } finally {
       loading.value = false;
     }
   }
 
   Future<void> logout() async {
-    final refreshToken = await _storage.read(key: 'refresh_token');
+    final prefs = await SharedPreferences.getInstance();
+    final refreshToken = prefs.getString('refresh_token');
     if (refreshToken != null) {
       try {
         await ApiClient.to.post('/auth/logout', {'refresh_token': refreshToken});
       } catch (_) {}
     }
-    await _storage.deleteAll();
+    await prefs.remove('access_token');
+    await prefs.remove('refresh_token');
     user.value = null;
     Get.offAllNamed('/login');
   }

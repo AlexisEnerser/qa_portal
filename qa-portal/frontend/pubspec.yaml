@@ -14,7 +14,7 @@ dependencies:
   get: ^4.6.6
 
   # Almacenamiento local (token JWT)
-  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.5.5
 
   # PDF
   pdf: ^3.11.1
