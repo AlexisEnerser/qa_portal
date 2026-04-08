@@ -10,6 +10,7 @@ from app.models.reports import ExecutionPdfVersion
 from app.models.user import User
 from app.services.auth_service import get_current_user
 from app.services.wasabi_service import upload_file, get_download_url
+from app.routers.executions import _sync_execution
 
 router = APIRouter()
 
@@ -39,6 +40,8 @@ async def get_execution_pdf_data(
     execution = db.query(TestExecution).filter(TestExecution.id == execution_id).first()
     if not execution:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sesión no encontrada")
+
+    _sync_execution(execution, db)
 
     results = execution.results
     total = len(results)

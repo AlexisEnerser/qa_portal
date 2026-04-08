@@ -19,6 +19,56 @@ from app.services.auth_service import get_current_user, require_admin
 router = APIRouter()
 
 
+def _sync_execution(execution: TestExecution, db: Session) -> None:
+    """Sincroniza resultados de una ejecución abierta con los test cases actuales.
+
+    - Agrega TestExecutionResult(pending) para test cases nuevos en los módulos seleccionados.
+    - Elimina resultados cuyo test case ya no existe en la BD.
+    No hace nada si la ejecución ya está terminada (finished_at != None).
+    """
+    if execution.finished_at is not None:
+        return
+
+    # Módulos seleccionados para esta ejecución
+    selected_module_ids = [em.module_id for em in execution.selected_modules]
+    if not selected_module_ids:
+        return
+
+    # Test cases activos actuales en esos módulos
+    expected_tc_ids = set(
+        tc_id for (tc_id,) in db.query(TestCase.id).filter(
+            TestCase.module_id.in_(selected_module_ids),
+            TestCase.status == "active",
+        ).all()
+    )
+
+    # Resultados existentes en la ejecución
+    existing_results = {r.test_case_id: r for r in execution.results}
+    existing_tc_ids = set(existing_results.keys())
+
+    changed = False
+
+    # Agregar nuevos
+    to_add = expected_tc_ids - existing_tc_ids
+    for tc_id in to_add:
+        db.add(TestExecutionResult(
+            execution_id=execution.id,
+            test_case_id=tc_id,
+            status=ExecutionResultStatus.pending,
+        ))
+        changed = True
+
+    # Eliminar huérfanos (test case ya no existe)
+    to_remove = existing_tc_ids - expected_tc_ids
+    for tc_id in to_remove:
+        db.delete(existing_results[tc_id])
+        changed = True
+
+    if changed:
+        db.commit()
+        db.refresh(execution)
+
+
 def _count_results(results):
     counts = defaultdict(int)
     for r in results:
@@ -194,6 +244,7 @@ def list_results(
     execution = db.query(TestExecution).filter(TestExecution.id == execution_id).first()
     if not execution:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sesión no encontrada")
+    _sync_execution(execution, db)
     return execution.results
 
 
@@ -247,6 +298,8 @@ def get_dashboard(
     execution = db.query(TestExecution).filter(TestExecution.id == execution_id).first()
     if not execution:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sesión no encontrada")
+
+    _sync_execution(execution, db)
 
     results = execution.results
     total = len(results)

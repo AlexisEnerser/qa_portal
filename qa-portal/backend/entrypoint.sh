@@ -3,9 +3,9 @@
 # Salir inmediatamente si un comando falla
 set -e
 
-echo "Esperando a que la base de datos esté lista..."
+echo "Esperando a que la base de datos estÃ© lista..."
 until curl -s http://db:5432 || [ $? -eq 52 ]; do
-  echo "Postgres está indisponible - durmiendo"
+  echo "Postgres estÃ¡ indisponible - durmiendo"
   sleep 1
 done
 

@@ -50,7 +50,7 @@ class TestExecutionResult(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     execution_id = Column(UUID(as_uuid=True), ForeignKey("test_executions.id", ondelete="CASCADE"), nullable=False)
-    test_case_id = Column(UUID(as_uuid=True), ForeignKey("test_cases.id"), nullable=False)
+    test_case_id = Column(UUID(as_uuid=True), ForeignKey("test_cases.id", ondelete="CASCADE"), nullable=False)
     assigned_to = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     status = Column(SAEnum(ExecutionResultStatus), nullable=False, default=ExecutionResultStatus.pending)
     notes = Column(Text, nullable=True)

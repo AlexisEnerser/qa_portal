@@ -974,6 +974,13 @@ class _StepsTable extends StatelessWidget {
 
   const _StepsTable({required this.steps});
 
+  static const _headerStyle = TextStyle(
+    color: Colors.white54,
+    fontWeight: FontWeight.bold,
+    fontSize: 13,
+  );
+  static const _cellStyle = TextStyle(color: Colors.white70, fontSize: 13);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -981,56 +988,72 @@ class _StepsTable extends StatelessWidget {
         color: const Color(0xFF2A2A3E),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width * 0.5),
-          child: DataTable(
-            headingRowColor: WidgetStateProperty.all(
-                const Color(0xFF1E1E2E).withValues(alpha: 0.5)),
-            columnSpacing: 24,
-            columns: const [
-              DataColumn(
-                  label: Text('#',
-                      style: TextStyle(
-                          color: Colors.white54, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Acción',
-                      style: TextStyle(
-                          color: Colors.white54, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Datos de prueba',
-                      style: TextStyle(
-                          color: Colors.white54, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Resultado Esperado',
-                      style: TextStyle(
-                          color: Colors.white54, fontWeight: FontWeight.bold))),
+      clipBehavior: Clip.antiAlias,
+      child: Table(
+        columnWidths: const {
+          0: FixedColumnWidth(40),
+          1: FlexColumnWidth(3),
+          2: FlexColumnWidth(2),
+          3: FlexColumnWidth(3),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.top,
+        children: [
+          // Header
+          TableRow(
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E1E2E).withValues(alpha: 0.5),
+            ),
+            children: const [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: Text('#', style: _headerStyle),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: Text('Acción', style: _headerStyle),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: Text('Datos de prueba', style: _headerStyle),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: Text('Resultado Esperado', style: _headerStyle),
+              ),
             ],
-            rows: List.generate(steps.length, (i) {
-              final step = steps[i] as Map<String, dynamic>? ?? {};
-              return DataRow(cells: [
-                DataCell(Text('${i + 1}',
-                    style: const TextStyle(color: Colors.white70))),
-                DataCell(ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 250),
-                  child: Text(step['action'] as String? ?? '',
-                      style: const TextStyle(color: Colors.white70)),
-                )),
-                DataCell(ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 150),
-                  child: Text(step['test_data'] as String? ?? '',
-                      style: const TextStyle(color: Colors.white70)),
-                )),
-                DataCell(ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 250),
-                  child: Text(step['expected_result'] as String? ?? '',
-                      style: const TextStyle(color: Colors.white70)),
-                )),
-              ]);
-            }),
           ),
-        ),
+          // Rows
+          ...List.generate(steps.length, (i) {
+            final step = steps[i] as Map<String, dynamic>? ?? {};
+            return TableRow(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.06),
+                  ),
+                ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Text('${i + 1}', style: _cellStyle),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Text(step['action'] as String? ?? '', style: _cellStyle),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Text(step['test_data'] as String? ?? '', style: _cellStyle),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Text(step['expected_result'] as String? ?? '', style: _cellStyle),
+                ),
+              ],
+            );
+          }),
+        ],
       ),
     );
   }
