@@ -154,8 +154,6 @@ class _LeftPanel extends StatelessWidget {
         final total = results.length;
         final completed = results.where((r) =>
             r.status == 'passed' ||
-            r.status == 'failed' ||
-            r.status == 'blocked' ||
             r.status == 'not_applicable').length;
         final progress = total > 0 ? completed / total : 0.0;
 

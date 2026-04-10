@@ -12,6 +12,12 @@ import '../../features/bugs/bugs_screen.dart';
 import '../../features/bugs/bug_form_screen.dart';
 import '../../features/reports/reports_screen.dart';
 import '../../features/profile/profile_screen.dart';
+import '../../features/automated/automated_suites_screen.dart';
+import '../../features/automated/automated_suite_detail_screen.dart';
+import '../../features/automated/automated_test_form_screen.dart';
+import '../../features/automated/automated_run_screen.dart';
+import '../../features/automated/automated_history_screen.dart';
+import '../../features/automated/automated_controller.dart';
 import '../../features/projects/projects_controller.dart';
 import '../../features/execution/execution_controller.dart';
 import '../../features/bugs/bugs_controller.dart';
@@ -115,6 +121,43 @@ class AppPages {
     GetPage(
       name: '/profile',
       page: () => const ProfileScreen(),
+      middlewares: [AuthMiddleware()],
+      transition: Transition.noTransition,
+    ),
+
+    // Automated Testing
+    GetPage(
+      name: '/automated/suites',
+      page: () => const AutomatedSuitesScreen(),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AutomatedController())),
+      middlewares: [AuthMiddleware()],
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: '/automated/suite',
+      page: () => const AutomatedSuiteDetailScreen(),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AutomatedController())),
+      middlewares: [AuthMiddleware()],
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: '/automated/test/form',
+      page: () => const AutomatedTestFormScreen(),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AutomatedController())),
+      middlewares: [AuthMiddleware()],
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: '/automated/run',
+      page: () => const AutomatedRunScreen(),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AutomatedController())),
+      middlewares: [AuthMiddleware()],
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: '/automated/history',
+      page: () => const AutomatedHistoryScreen(),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AutomatedController())),
       middlewares: [AuthMiddleware()],
       transition: Transition.noTransition,
     ),

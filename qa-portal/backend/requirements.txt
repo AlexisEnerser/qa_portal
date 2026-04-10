@@ -27,5 +27,8 @@ selenium==4.27.1
 webdriver-manager==4.0.2
 Pillow==11.0.0
 
+# Playwright (pruebas automatizadas nativas)
+playwright==1.49.1
+
 # Utilidades
 python-dotenv==1.0.1

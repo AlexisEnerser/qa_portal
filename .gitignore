@@ -1,5 +1,12 @@
 *.env
 
+# Python
+__pycache__/
+*.pyc
+.hypothesis/
+.pytest_cache/
+.benchmarks/
+
 # Miscellaneous
 *.class
 *.log

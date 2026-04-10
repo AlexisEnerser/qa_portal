@@ -25,14 +25,6 @@ class Settings(BaseSettings):
     sonarqube_url: str = "http://10.255.230.98:9000"
     sonarqube_token: str = ""
 
-    # Zoho QEngine
-    zoho_client_id: str = ""
-    zoho_client_secret: str = ""
-    zoho_refresh_token: str = ""
-    zoho_token_expiry_minutes: int = 50
-    zoho_email: str = ""
-    zoho_password: str = ""
-
     # GitHub
     github_token: str = ""
 

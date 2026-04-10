@@ -281,8 +281,9 @@ class _ExecutionDashboardScreenState
         final passed = (d['passed'] as num?)?.toInt() ?? 0;
         final failed = (d['failed'] as num?)?.toInt() ?? 0;
         final blocked = (d['blocked'] as num?)?.toInt() ?? 0;
+        final notApplicable = (d['not_applicable'] as num?)?.toInt() ?? 0;
         final pending = (d['pending'] as num?)?.toInt() ?? 0;
-        final completed = passed + failed + blocked;
+        final completed = passed + notApplicable;
         final progress = total > 0 ? completed / total : 0.0;
 
         final byModule =

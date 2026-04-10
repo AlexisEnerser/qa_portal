@@ -318,6 +318,13 @@ class _ExecutionsScreenState extends State<ExecutionsScreen> {
     return AppShell(
       title: 'Sesiones — $projectName',
       actions: [
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(foregroundColor: Colors.white70, side: const BorderSide(color: Colors.white24)),
+          onPressed: () => Get.back(),
+          icon: const Icon(Icons.arrow_back, size: 16),
+          label: const Text('Regresar'),
+        ),
+        const SizedBox(width: 8),
         ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF6C63FF)),

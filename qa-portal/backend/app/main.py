@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.config import get_settings
-from app.routers import auth, users, projects, test_cases, executions, screenshots, pdf_data, bugs, sonar, github, qengine, ai_chat
+from app.routers import auth, users, projects, test_cases, executions, screenshots, pdf_data, bugs, sonar, github, ai_chat, automated
 
 settings = get_settings()
 
@@ -39,8 +39,8 @@ app.include_router(pdf_data.router, prefix="/qa", tags=["PDF"])
 app.include_router(bugs.router, prefix="/qa", tags=["Bugs"])
 app.include_router(sonar.router, prefix="/sonar", tags=["SonarQube"])
 app.include_router(github.router, prefix="/github", tags=["Github"])
-app.include_router(qengine.router, prefix="/qengine", tags=["Zoho QEngine"])
 app.include_router(ai_chat.router, prefix="/ai", tags=["Asistente IA"])
+app.include_router(automated.router, prefix="/automated", tags=["Pruebas Automatizadas"])
 
 
 

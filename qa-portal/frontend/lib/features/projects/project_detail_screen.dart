@@ -74,10 +74,9 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                       style: const TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                     const Spacer(),
-                    OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white70,
-                        side: const BorderSide(color: Colors.white24),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6C63FF),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -86,6 +85,25 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                       label: const Text('Sesiones de Ejecución'),
                       onPressed: () => Get.toNamed(
                         '/executions',
+                        arguments: {
+                          'projectId': projectId,
+                          'projectName': projectName,
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFF6C63FF),
+                        side: const BorderSide(color: Color(0xFF6C63FF)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      icon: const Icon(Icons.science_outlined, size: 18),
+                      label: const Text('Pruebas Automatizadas'),
+                      onPressed: () => Get.toNamed(
+                        '/automated/suites',
                         arguments: {
                           'projectId': projectId,
                           'projectName': projectName,

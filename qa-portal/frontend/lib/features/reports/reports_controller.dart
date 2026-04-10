@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import '../../core/api/api_client.dart';
 import 'sonar_pdf_service.dart';
 import 'posting_pdf_service.dart';
-import 'qengine_pdf_service.dart';
 
 class ReportsController extends GetxController {
   static ReportsController get to => Get.find();
@@ -68,37 +67,6 @@ class ReportsController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'Error generando Hoja de Posteo: $e';
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // 3. Generar PDF de QEngine
-  Future<void> downloadQenginePdf(String projectId, String testRunId) async {
-    isLoading.value = true;
-    errorMessage.value = '';
-
-    try {
-      final response = await ApiClient.to.post('/qengine/report-data', {
-        'project_id': projectId,
-        'test_run_id': testRunId,
-        'extract_images': true,
-      });
-
-      if (response.isOk) {
-        final Uint8List pdfBytes = await QenginePdfService.generate(
-          response.body as Map<String, dynamic>,
-          selectedLogo.value,
-        );
-        await Printing.layoutPdf(
-          onLayout: (_) async => pdfBytes,
-          name: 'bateria_qengine_$projectId.pdf',
-        );
-      } else {
-        errorMessage.value = response.body['detail'] ?? 'Error al obtener datos de QEngine';
-      }
-    } catch (e) {
-      errorMessage.value = 'Error generando PDF de QEngine: $e';
     } finally {
       isLoading.value = false;
     }
