@@ -414,7 +414,7 @@ class _ExecutionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final completed =
-        exec.passed + exec.failed + exec.blocked + exec.notApplicable;
+        exec.passed + exec.notApplicable;
     final progress =
         exec.total > 0 ? completed / exec.total : 0.0;
     final isFinished = exec.finishedAt != null;
