@@ -13,7 +13,7 @@ void main() async {
   final auth = Get.put(AuthController(), permanent: true);
   Get.put(AiChatController(), permanent: true);
 
-  // Esperar a que el auto-login termine antes de decidir la ruta
+  // Esperar a que el auto-login termine antes de decidir la ruta ok
   await auth.waitUntilReady();
 
   runApp(const QAPortalApp());
