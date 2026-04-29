@@ -53,7 +53,7 @@ class SonarService:
 
             scanner_cmd = [
                 "docker", "run", "--rm",
-                "--network=host",
+                "--network=sonarqube-prod_default",
                 "-v", f"{tmp_dir}:/usr/src",
                 "-e", f"SONAR_HOST_URL={self.base_url}",
                 "sonarsource/sonar-scanner-cli",

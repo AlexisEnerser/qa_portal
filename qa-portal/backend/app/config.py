@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     ai_model: str = "openai/gpt-oss-20b"
 
     # SonarQube
-    sonarqube_url: str = "http://10.255.230.98:9000"
+    sonarqube_url: str = "http://sonarqube:9000"
     sonarqube_token: str = ""
 
     # GitHub

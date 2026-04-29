@@ -27,6 +27,9 @@ services:
     container_name: qa_portal_backend
     restart: unless-stopped
     env_file: .env
+    networks:
+      - default
+      - sonarqube-prod_default
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
@@ -60,3 +63,8 @@ services:
 volumes:
   postgres_data:
   qa_portal_screenshots:
+
+networks:
+  default:
+  sonarqube-prod_default:
+    external: true
